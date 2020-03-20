@@ -15,7 +15,7 @@ app = Flask(__name__)
 random_value      = ''.join(str(random.randint(0,9)) for _ in range(12))
 app_host          = environ.get('APP_HOST', '0.0.0.0')
 app_port          = environ.get('APP_PORT', '5000')
-app_mongo_ip      = environ.get('MONGO_IP', '10.1.0.82')
+app_mongo_ip      = environ.get('MONGO_IP', '134.209.241.140')
 app_mongo_port    = int(environ.get('MONGO_PORT', '27017'))
 app_mongo_db      = environ.get('MONGO_DB', 'profiles')
 app_mongo_coll    = environ.get('MONGO_COLLECTION', 'inventory_data')
@@ -92,6 +92,15 @@ def set_data():
         add_mongo_data(collection, dict_data)
         
         return(redirect(url_for('index')))
+
+@app.route('/add_info')
+def add_info():
+    username   = request.args.get('user_name')
+    mongo_data =  get_mongo_data(collection)
+
+    for user in mongo_data:
+        if username in user['UserName']:   
+            return render_template('add_info.html', inventory_data=user)
 
 @app.route('/hdd_sn', methods=['POST', 'GET'])
 def hdd_sn():

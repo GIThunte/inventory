@@ -18,38 +18,17 @@
         <span class="navbar-toggler-icon"></span>
       </button>
     </nav><br><br>
-    <div class="container">
-      <table class="table table-striped" border="1">
-        <thead class="thead-dark">
-          <tr>
-             <th scope="col">UserName</th>        
-             <th scope="col">Room</th>      
-             <th class="hide_mobile" scope="col">Processor</th> 
-             <th class="hide_mobile" scope="col">RAM</th>         
-             <th class="hide_mobile" scope="col">Display</th>       
-             <th class="hide_mobile" scope="col">DisplaySerialNumber</th>
-             <th class="hide_mobile" scope="col">HardDisk</th>
-             <th class="hide_mobile" scope="col">HardDiskSerialNumber</th>
-             <th scope="col">AdditionalInfo</th>      
-          </tr>
-        </thead>
-        <tbody>
-          {% for i in inventory_data %}
-            <tr>
-              <td>{{ i['UserName'] }}</td>
-              <td>{{ i['Room'] }}</td>
-              <td class="hide_mobile">{{ i['Processor'] }}</td>
-              <td class="hide_mobile">{{ i['RAM'] }}</td>
-              <td class="hide_mobile">{{ i['Display'] }}</td>
-              <td class="hide_mobile">{{ i['DisplaySerialNumber'] }}</td>
-              <td class="hide_mobile">{{ i['HardDisk'] }}</td>
-              <td class="hide_mobile">{{ i['HardDiskSerialNumber'] }}</td>
-              <td >{{ i['AdditionalInfo'] }}<p class="hide_for_pc"><a href="{{ url_for('add_info', user_name=i['UserName']) }}">Additional Information</a></p></td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+  	<div class="container">
+       <ul class="list-group">
+        {% for key, value in inventory_data.items() %}
+            {% if not value %}
+               <li class="list-group-item "><b>{{ key }}</b> -> "not data"</li>
+            {% else %}
+               <li class="list-group-item "><b>{{ key }}</b> -> {{ value }}</li> 
+            {% endif %}
+        {% endfor %}
+      </ul>
+	  </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
