@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Inventory</title>
+
+  </head>
+  <body>
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ url_for('index') }}">Main Page</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('get_data') }}">Current Inventory Data</a>
+          </li>
+        </ul>
+      </div> 
+    </nav><br><br>
+  	<div class="container">
+	  <form action="/add_data" enctype="multipart/form-data" id="data">
+	    <h2>Inventory</h2>
+	    <div class="row">
+	      <div class="col-md-12">
+	        <div class="form-group">
+	          <label for="first">Username</label>
+	          <input type="text" name="username" class="form-control" placeholder="Name For user" id="first">
+	        </div>
+	      </div>
+	      <!--  col-md-6   -->
+
+	      <div class="col-md-12">
+	        <div class="form-group">
+	          <label for="last">Room Number</label>
+	          <input type="text" name="room" class="form-control" placeholder="Root number" id="last">
+	        </div>
+	      </div>
+	      <!--  col-md-6   -->
+	   
+	      <div class="col-md-12">
+	        <div class="form-group">
+	          <label for="company">CPU</label>
+	          <input type="text" name="cpu" class="form-control" placeholder="Processor Info" id="company">
+	        </div>
+	      </div>
+	      <!--  col-md-6   -->
+
+	      <div class="col-md-12">
+
+	        <div class="form-group">
+	          <label for="phone">Memory Size</label>
+	          <input type="text" name="memory" class="form-control" id="phone" placeholder="Size for RAM">
+	        </div>
+	      </div>
+	      <div class="col-md-12">
+
+	        <div class="form-group">
+	          <label for="phone">Monitor</label>
+	          <input type="text" name="monitor" class="form-control" id="phone" placeholder="Monitor Type">
+	        </div>
+	      </div>
+	      <div class="col-md-12">
+	        <div class="form-group">
+	          <label for="phone">Monitor Serial Number</label>
+	          <input type="text" name="monitor_sn" class="form-control" id="monitor_serial" placeholder="SN">
+	          <input type="file" id="monitor_sn" accept="image/*" capture="environment">
+	        </div>
+	      </div>
+	      <div class="col-md-12">
+	        <div class="form-group">
+	          <label for="phone">HDD Size</label>
+	          <input type="text" name="hdd" class="form-control" id="phone" placeholder="HDD/SSD info">
+	        </div>
+	      </div>
+	      <div class="col-md-12">
+
+	        <div class="form-group">
+	          <label for="phone">HDD Serial Number</label>
+	          <input type="text" name="hdd_sn" class="form-control" id="hdd_serial" placeholder="SN">
+	          <input type="file" id="hdd_sn" accept="image/*" capture="environment">
+	        </div>
+	      </div>
+	    
+	     <div class="col-md-12">
+	     	 <div class="form-group">
+			    <label for="exampleFormControlTextarea1">Additional Info</label>
+			    <textarea class="form-control" name="ainfo" id="exampleFormControlTextarea1" rows="3"></textarea>
+			  </div>
+	     </div>
+	    </div>
+	    <!--  row   -->
+	    <button type="submit" class="btn btn-primary">Submit</button>
+	  </form><br><br>
+	</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <script>
+    	function ajax_send(url, data){
+    		$.ajax({
+		      url: url,
+		      type: 'POST',
+		      data: data,
+		      async: false,
+		      cache: false,
+		      contentType: false,
+		      processData: false,
+		      success: function (response) {
+		      	m_code = jQuery.parseJSON(response)['data_sn']
+		      	document.getElementById('monitor_serial').value = m_code;
+		        // do something on success
+		      }
+		    });
+    	}
+
+    	document.getElementById('hdd_sn').onchange = function(e) { 
+		    var url  = '/hdd_sn';
+		    var hdd_sn_img = $('#hdd_sn').get(0).files[0];
+		    var formData = new FormData();
+		    formData.append('hdd_sn', hdd_sn_img);
+		 	ajax_send(url, formData)
+		};
+	    document.getElementById('monitor_sn').onchange = function(e) { 
+		    var url  = '/monitor_sn';
+		    var hdd_sn_img = $('#monitor_sn').get(0).files[0];
+		    var formData = new FormData();
+		    formData.append('monitor_sn', hdd_sn_img);
+		 	ajax_send(url, formData)
+
+		};
+	</script>
+  </body>
+</html>
