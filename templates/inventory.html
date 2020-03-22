@@ -27,52 +27,20 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" id="inv" href="#">Inventory </a>
+       <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('inventory') }}">Inventory </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" id="r_users" href="#">Remote Users </a>
+        <li class="nav-item ">
+          <a class="nav-link" href="{{ url_for('remote_users') }}">Remote Users </a>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" id="search_me" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" onclick="mark_search()" type="button">Search</button>
+        <input class="form-control mr-sm-2"  name="keyword"  type="text" id="search_me" placeholder="Search on page" aria-label="Search">
+        <button id="btnExport" onclick="Export('inventory', 'inventory.pdf')" class="btn btn-outline-success my-2 my-sm-0 hide_mobile" type="button">Export table to pdf</button>
       </form>
     </div>
   </nav><br><br>
     <div class="container context">
-        <table class="table table-striped" id="remote_users" border="1">
-            <thead class="thead-dark">
-              <tr>
-                 <th scope="col">UserName</th>        
-                 <th scope="col">Room</th>      
-                 <th class="hide_mobile" scope="col">Processor</th> 
-                 <th class="hide_mobile" scope="col">RAM</th>         
-                 <th class="hide_mobile" scope="col">Display</th>       
-                 <th class="hide_mobile" scope="col">DisplaySerialNumber</th>
-                 <th class="hide_mobile" scope="col">HardDisk</th>
-                 <th class="hide_mobile" scope="col">HardDiskSerialNumber</th>
-                 <th scope="col">AdditionalInfo</th>      
-              </tr>
-            </thead>
-            <tbody>
-              {% for i in inventory_data %}
-                {% if i['type'] == 'remote_user' %}
-                  <tr>
-                    <td>{{ i['UserName'] }}</td>
-                    <td>{{ i['Room'] }}</td>
-                    <td class="hide_mobile">{{ i['Processor'] }}</td>
-                    <td class="hide_mobile">{{ i['RAM'] }}</td>
-                    <td class="hide_mobile">{{ i['Display'] }}</td>
-                    <td class="hide_mobile">{{ i['DisplaySerialNumber'] }}</td>
-                    <td class="hide_mobile">{{ i['HardDisk'] }}</td>
-                    <td class="hide_mobile">{{ i['HardDiskSerialNumber'] }}</td>
-                    <td >{{ i['AdditionalInfo'] }}<p class="hide_for_pc"><a href="{{ url_for('add_info', user_name=i['UserName']) }}">Additional Information</a></p></td>
-                  </tr>
-                {% endif %}
-              {% endfor %}
-            </tbody>
-          </table>
           <table class="table table-striped" id="inventory" border="1">
             <thead class="thead-dark">
               <tr>
@@ -107,52 +75,17 @@
           </table>
     </div>
 
-    <!-- Optional JavaScript -->
+       <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function(){
-        $('.navbar-nav li').click(function(event){
-            $('.active').removeClass('active');
-            $(this).addClass('active');
-            event.preventDefault();
-        });
-      });
-      $(document).ready(function(){
-        $('#inv').click(function(event){
-           $( "#remote_users" ).hide();
-           $( "#inventory" ).show();
-        });
-      });
-
-       $(document).ready(function(){
-        $('#r_users').click(function(event){
-           $( "#inventory" ).hide();
-           $( "#remote_users" ).show();
-        });
-      });
-       $( "#inventory" ).show();
-       $( "#remote_users" ).hide();
-       $(document).ready(function() {
-         $('#search_me').keydown(function(e) {
-          if(e.keyCode === 13) {
-
-             mark_search()
-          }
-         });
-       });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.js"></script>
+    <script src="/static/automark.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script type="text/javascript" src="/static/to_pdf.js"></script>
     </script>
-    <script type="text/javascript">
-      function mark_search() {
-          sName = document.getElementById("search_me").value; 
-          var context = document.querySelector(".context");
-          var instance = new Mark(context);
-          instance.unmark();
-          instance.mark(sName);
-     }
-    </script>
+
   </body>
 </html>

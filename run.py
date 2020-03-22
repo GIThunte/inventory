@@ -53,13 +53,13 @@ def add_mongo_data(m_collection, mongo_data):
 def index():
     return render_template('index.html')
 
-@app.route('/remote')
-def remote():
-    return render_template('remote.html', inventory_data=get_mongo_data(collection))
+@app.route('/remote_users')
+def remote_users():
+    return render_template('remote_users.html', inventory_data=get_mongo_data(collection))
 
-@app.route('/get_data')
-def get_data():
-    return render_template('data.html', inventory_data=get_mongo_data(collection))
+@app.route('/inventory')
+def inventory():
+    return render_template('inventory.html', inventory_data=get_mongo_data(collection))
 
 @app.route('/add_data', methods=['POST', 'GET'])
 def set_data():
