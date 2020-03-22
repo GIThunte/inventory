@@ -10,6 +10,13 @@
 
     <title>Inventory</title>
     <link href="/static/style.css" rel="stylesheet">
+    <style type="text/css">
+       mark{
+          background: lime;
+          color: black;
+          padding: 0;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,12 +35,12 @@
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <input class="form-control mr-sm-2" type="text" id="search_me" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="mark_search()" type="button">Search</button>
       </form>
     </div>
   </nav><br><br>
-    <div class="container">
+    <div class="container context">
         <table class="table table-striped" id="remote_users" border="1">
             <thead class="thead-dark">
               <tr>
@@ -105,6 +112,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function(){
         $('.navbar-nav li').click(function(event){
@@ -128,6 +136,23 @@
       });
        $( "#inventory" ).show();
        $( "#remote_users" ).hide();
+       $(document).ready(function() {
+         $('#search_me').keydown(function(e) {
+          if(e.keyCode === 13) {
+
+             mark_search()
+          }
+         });
+       });
+    </script>
+    <script type="text/javascript">
+      function mark_search() {
+          sName = document.getElementById("search_me").value; 
+          var context = document.querySelector(".context");
+          var instance = new Mark(context);
+          instance.unmark();
+          instance.mark(sName);
+     }
     </script>
   </body>
 </html>
