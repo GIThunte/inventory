@@ -14,41 +14,90 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="{{ url_for('index') }}">Main Page</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </nav><br><br>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" id="inv" href="#">Inventory </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="r_users" href="#">Remote Users </a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav><br><br>
     <div class="container">
-      <table class="table table-striped" border="1">
-        <thead class="thead-dark">
-          <tr>
-             <th scope="col">UserName</th>        
-             <th scope="col">Room</th>      
-             <th class="hide_mobile" scope="col">Processor</th> 
-             <th class="hide_mobile" scope="col">RAM</th>         
-             <th class="hide_mobile" scope="col">Display</th>       
-             <th class="hide_mobile" scope="col">DisplaySerialNumber</th>
-             <th class="hide_mobile" scope="col">HardDisk</th>
-             <th class="hide_mobile" scope="col">HardDiskSerialNumber</th>
-             <th scope="col">AdditionalInfo</th>      
-          </tr>
-        </thead>
-        <tbody>
-          {% for i in inventory_data %}
-            <tr>
-              <td>{{ i['UserName'] }}</td>
-              <td>{{ i['Room'] }}</td>
-              <td class="hide_mobile">{{ i['Processor'] }}</td>
-              <td class="hide_mobile">{{ i['RAM'] }}</td>
-              <td class="hide_mobile">{{ i['Display'] }}</td>
-              <td class="hide_mobile">{{ i['DisplaySerialNumber'] }}</td>
-              <td class="hide_mobile">{{ i['HardDisk'] }}</td>
-              <td class="hide_mobile">{{ i['HardDiskSerialNumber'] }}</td>
-              <td >{{ i['AdditionalInfo'] }}<p class="hide_for_pc"><a href="{{ url_for('add_info', user_name=i['UserName']) }}">Additional Information</a></p></td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <table class="table table-striped" id="remote_users" border="1">
+            <thead class="thead-dark">
+              <tr>
+                 <th scope="col">UserName</th>        
+                 <th scope="col">Room</th>      
+                 <th class="hide_mobile" scope="col">Processor</th> 
+                 <th class="hide_mobile" scope="col">RAM</th>         
+                 <th class="hide_mobile" scope="col">Display</th>       
+                 <th class="hide_mobile" scope="col">DisplaySerialNumber</th>
+                 <th class="hide_mobile" scope="col">HardDisk</th>
+                 <th class="hide_mobile" scope="col">HardDiskSerialNumber</th>
+                 <th scope="col">AdditionalInfo</th>      
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in inventory_data %}
+                {% if i['type'] == 'remote_user' %}
+                  <tr>
+                    <td>{{ i['UserName'] }}</td>
+                    <td>{{ i['Room'] }}</td>
+                    <td class="hide_mobile">{{ i['Processor'] }}</td>
+                    <td class="hide_mobile">{{ i['RAM'] }}</td>
+                    <td class="hide_mobile">{{ i['Display'] }}</td>
+                    <td class="hide_mobile">{{ i['DisplaySerialNumber'] }}</td>
+                    <td class="hide_mobile">{{ i['HardDisk'] }}</td>
+                    <td class="hide_mobile">{{ i['HardDiskSerialNumber'] }}</td>
+                    <td >{{ i['AdditionalInfo'] }}<p class="hide_for_pc"><a href="{{ url_for('add_info', user_name=i['UserName']) }}">Additional Information</a></p></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+          <table class="table table-striped" id="inventory" border="1">
+            <thead class="thead-dark">
+              <tr>
+                 <th scope="col">UserName</th>        
+                 <th scope="col">Room</th>      
+                 <th class="hide_mobile" scope="col">Processor</th> 
+                 <th class="hide_mobile" scope="col">RAM</th>         
+                 <th class="hide_mobile" scope="col">Display</th>       
+                 <th class="hide_mobile" scope="col">DisplaySerialNumber</th>
+                 <th class="hide_mobile" scope="col">HardDisk</th>
+                 <th class="hide_mobile" scope="col">HardDiskSerialNumber</th>
+                 <th scope="col">AdditionalInfo</th>      
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in inventory_data %}
+                {% if i['type'] == 'inventory_data' %}
+                  <tr>
+                    <td>{{ i['UserName'] }}</td>
+                    <td>{{ i['Room'] }}</td>
+                    <td class="hide_mobile">{{ i['Processor'] }}</td>
+                    <td class="hide_mobile">{{ i['RAM'] }}</td>
+                    <td class="hide_mobile">{{ i['Display'] }}</td>
+                    <td class="hide_mobile">{{ i['DisplaySerialNumber'] }}</td>
+                    <td class="hide_mobile">{{ i['HardDisk'] }}</td>
+                    <td class="hide_mobile">{{ i['HardDiskSerialNumber'] }}</td>
+                    <td >{{ i['AdditionalInfo'] }}<p class="hide_for_pc"><a href="{{ url_for('add_info', user_name=i['UserName']) }}">Additional Information</a></p></td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
     </div>
 
     <!-- Optional JavaScript -->
@@ -56,5 +105,29 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('.navbar-nav li').click(function(event){
+            $('.active').removeClass('active');
+            $(this).addClass('active');
+            event.preventDefault();
+        });
+      });
+      $(document).ready(function(){
+        $('#inv').click(function(event){
+           $( "#remote_users" ).hide();
+           $( "#inventory" ).show();
+        });
+      });
+
+       $(document).ready(function(){
+        $('#r_users').click(function(event){
+           $( "#inventory" ).hide();
+           $( "#remote_users" ).show();
+        });
+      });
+       $( "#inventory" ).show();
+       $( "#remote_users" ).hide();
+    </script>
   </body>
 </html>

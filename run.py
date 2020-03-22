@@ -53,9 +53,9 @@ def add_mongo_data(m_collection, mongo_data):
 def index():
     return render_template('index.html')
 
-@app.route('/qr')
-def qr():
-    return render_template('qr.html')
+@app.route('/remote')
+def remote():
+    return render_template('remote.html', inventory_data=get_mongo_data(collection))
 
 @app.route('/get_data')
 def get_data():
@@ -65,6 +65,7 @@ def get_data():
 def set_data():
     if request.method == 'GET':
         count_data      = collection.count() + 1
+        inv_type        = request.args.getlist('list')
         username        = request.args.get('username')
         cpu             = request.args.get('cpu')
         memory          = request.args.get('memory')
@@ -84,11 +85,10 @@ def set_data():
                        'DisplaySerialNumber':     monitor_sn,
                        'HardDisk':                hdd,
                        'HardDiskSerialNumber':    hdd_sn,
-                       'AdditionalInfo':          additional_info
+                       'AdditionalInfo':          additional_info,
+                       'type':                    inv_type[0]
                      } 
                         
-
-
         add_mongo_data(collection, dict_data)
         
         return(redirect(url_for('index')))
