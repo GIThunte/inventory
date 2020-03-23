@@ -59,7 +59,7 @@
               {% for i in inventory_data %}
                 {% if i['type'] == 'inventory_data' %}
                   <tr>
-                    <td>{{ i['UserName'] }}</td>
+                    <td><a href="{{ url_for('edit_data', username=i['UserName']) }}">{{ i['UserName'] }}</a></td>
                     <td>{{ i['Room'] }}</td>
                     <td class="hide_mobile">{{ i['Processor'] }}</td>
                     <td class="hide_mobile">{{ i['RAM'] }}</td>

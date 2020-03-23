@@ -15,7 +15,7 @@ app = Flask(__name__)
 random_value      = ''.join(str(random.randint(0,9)) for _ in range(12))
 app_host          = environ.get('APP_HOST', '0.0.0.0')
 app_port          = environ.get('APP_PORT', '5000')
-app_mongo_ip      = environ.get('MONGO_IP', '134.209.241.140')
+app_mongo_ip      = environ.get('MONGO_IP', '10.1.0.82')
 app_mongo_port    = int(environ.get('MONGO_PORT', '27017'))
 app_mongo_db      = environ.get('MONGO_DB', 'profiles')
 app_mongo_coll    = environ.get('MONGO_COLLECTION', 'inventory_data')
@@ -43,9 +43,24 @@ def get_mongo_data(collection_obj):
     except Exception as e:
         logger(e)
 
+def update_db_data(username, collection_obj, new_data):
+    try:
+        update_obj = {'pattern': {'UserName': username},
+                                      'new_count': { "$set": new_data }}
+        update_result = collection_obj.update_one(update_obj['pattern'], update_obj['new_count'])
+        print(update_result)
+    except Exception as e:
+        logger(e)
+
 def add_mongo_data(m_collection, mongo_data):
     try:
         m_collection.insert_one(mongo_data)
+    except Exception as e:
+        logger(e)
+
+def delete_mongo_data(m_collection, delete_user):
+    try:
+        m_collection.delete_one({'UserName': delete_user})
     except Exception as e:
         logger(e)
 
@@ -60,6 +75,37 @@ def remote_users():
 @app.route('/inventory')
 def inventory():
     return render_template('inventory.html', inventory_data=get_mongo_data(collection))
+
+@app.route('/edit_data')
+def edit_data():
+    return render_template('edit_data.html', edit_user_name=request.args.get('username'),
+                                            inventory_data=get_mongo_data(collection))
+@app.route('/delete_data', methods=['POST', 'GET'])
+def delete_data():
+    delete_mongo_data(collection, request.args.get('username'))
+    return redirect(url_for('index'))
+
+@app.route('/update_data', methods=['POST', 'GET'])
+def update_data():
+    username = request.args.get('UserName')
+    
+    new_data = {
+
+        'UserName':             username,            
+        'Room':                 request.args.get('Room'),                
+        'Processor':            request.args.get('Processor'),           
+        'RAM':                  request.args.get('RAM'),                 
+        'Display':              request.args.get('Display'),             
+        'DisplaySerialNumber':  request.args.get('DisplaySerialNumber'), 
+        'HardDisk':             request.args.get('HardDisk'),            
+        'HardDiskSerialNumber': request.args.get('HardDiskSerialNumber'),
+        'AdditionalInfo':       request.args.get('AdditionalInfo')      
+                        
+    }
+    
+    update_db_data(username, collection, new_data)
+    return(redirect(url_for('edit_data', username=username)))
+    
 
 @app.route('/add_data', methods=['POST', 'GET'])
 def set_data():
@@ -95,11 +141,8 @@ def set_data():
 
 @app.route('/add_info')
 def add_info():
-    username   = request.args.get('user_name')
-    mongo_data =  get_mongo_data(collection)
-
-    for user in mongo_data:
-        if username in user['UserName']:   
+    for user in get_mongo_data(collection):
+        if request.args.get('user_name') in user['UserName']:   
             return render_template('add_info.html', inventory_data=user)
 
 @app.route('/hdd_sn', methods=['POST', 'GET'])
