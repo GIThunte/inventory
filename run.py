@@ -48,7 +48,7 @@ def update_db_data(username, collection_obj, new_data):
         update_obj = {'pattern': {'UserName': username},
                                       'new_count': { "$set": new_data }}
         update_result = collection_obj.update_one(update_obj['pattern'], update_obj['new_count'])
-        print(update_result)
+        return update_result.modified_count
     except Exception as e:
         logger(e)
 
@@ -79,7 +79,9 @@ def inventory():
 @app.route('/edit_data')
 def edit_data():
     return render_template('edit_data.html', edit_user_name=request.args.get('username'),
-                                            inventory_data=get_mongo_data(collection))
+                                            inventory_data=get_mongo_data(collection),
+                                            updated=request.args.get('updated_c'))
+
 @app.route('/delete_data', methods=['POST', 'GET'])
 def delete_data():
     delete_mongo_data(collection, request.args.get('username'))
@@ -102,9 +104,9 @@ def update_data():
         'AdditionalInfo':       request.args.get('AdditionalInfo')      
                         
     }
-    
-    update_db_data(username, collection, new_data)
-    return(redirect(url_for('edit_data', username=username)))
+
+    update_count = update_db_data(username, collection, new_data)
+    return(redirect(url_for('edit_data', username=username, updated_c=update_count)))
     
 
 @app.route('/add_data', methods=['POST', 'GET'])
