@@ -86,6 +86,39 @@ def delete_data():
     mongo_bridge.delete_mongo_data(collection, request.args.get('username'))
     return redirect(url_for('index'))
 
+
+"""
+The route for get additional information.
+Using only for mobile displays
+"""
+@app.route('/add_info')
+def add_info():
+    for user in mongo_bridge.get_mongo_data(collection):
+        if request.args.get('user_name') in user['UserName']:   
+            return render_template('add_info.html', inventory_data=user)
+
+"""
+This route receives the image of the serial number 
+of the hard drive, and returns the serial number in 
+text form
+"""
+@app.route('/hdd_sn', methods=['POST', 'GET'])
+def hdd_sn():
+    return json.dumps({'hdd_serial': barcodes.barcodes_worker(request.files['hdd_sn'],
+                                    tmp_path,
+                                    random_value)})
+
+"""
+This route receives the image of the serial number 
+of the monitor, and returns the serial number in 
+text form
+"""
+@app.route('/monitor_sn', methods=['POST', 'GET'])
+def monitor_sn():
+    return json.dumps({'monitor_serial': barcodes.barcodes_worker(request.files['monitor_sn'],
+                                    tmp_path,
+                                    random_value)})
+
 """
 Internal route for update inventory data
 """
@@ -150,37 +183,6 @@ def set_data():
         
         return(redirect(url_for('index')))
 
-"""
-The route for get additional information.
-Using only for mobile displays
-"""
-@app.route('/add_info')
-def add_info():
-    for user in mongo_bridge.get_mongo_data(collection):
-        if request.args.get('user_name') in user['UserName']:   
-            return render_template('add_info.html', inventory_data=user)
-
-"""
-This route receives the image of the serial number 
-of the hard drive, and returns the serial number in 
-text form
-"""
-@app.route('/hdd_sn', methods=['POST', 'GET'])
-def hdd_sn():
-    return json.dumps({'hdd_serial': barcodes.barcodes_worker(request.files['hdd_sn'],
-                                    tmp_path,
-                                    random_value)})
-
-"""
-This route receives the image of the serial number 
-of the monitor, and returns the serial number in 
-text form
-"""
-@app.route('/monitor_sn', methods=['POST', 'GET'])
-def monitor_sn():
-    return json.dumps({'monitor_serial': barcodes.barcodes_worker(request.files['monitor_sn'],
-                                    tmp_path,
-                                    random_value)})
 
 # Main check if script module
 if __name__ == '__main__':
