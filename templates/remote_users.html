@@ -41,6 +41,7 @@
     </div>
   </nav><br><br>
     <div class="container context">
+        {% if inventory_data|length and 'remote_user' in inventory_data|string %}
         <table class="table table-striped" id="remote_users" border="1">
             <thead class="thead-dark">
               <tr>
@@ -59,7 +60,7 @@
               {% for i in inventory_data %}
                 {% if i['type'] == 'remote_user' %}
                   <tr>
-                    <td><a href="{{ url_for('edit_data', username=i['UserName']) }}">{{ i['UserName'] }}</a></td>
+                    <td><a class="hide_mobile" href="{{ url_for('edit_data', username=i['UserName']) }}">{{ i['UserName'] }}</a><p class="hide_for_pc">{{ i['UserName'] }}</p></td>
                     <td>{{ i['Room'] }}</td>
                     <td class="hide_mobile">{{ i['Processor'] }}</td>
                     <td class="hide_mobile">{{ i['RAM'] }}</td>
@@ -73,7 +74,9 @@
               {% endfor %}
             </tbody>
           </table>
-          
+          {% else %}
+          <p><h3>Inventory data is empty, click <a href="{{ url_for('index') }}">here</a> for add new data</h1></p>
+          {% endif %}
     </div>
 
     <!-- Optional JavaScript -->

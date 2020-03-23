@@ -41,6 +41,7 @@
     </div>
   </nav><br><br>
     <div class="container context">
+          {% if inventory_data|length and 'inventory_data' in inventory_data|string %}
           <table class="table table-striped" id="inventory" border="1">
             <thead class="thead-dark">
               <tr>
@@ -73,6 +74,9 @@
               {% endfor %}
             </tbody>
           </table>
+          {% else %}
+          <p><h3>Inventory data is empty, click <a href="{{ url_for('index') }}">here</a> for add new data</h1></p>
+          {% endif %}
     </div>
 
        <!-- Optional JavaScript -->
