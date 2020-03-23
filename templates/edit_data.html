@@ -32,46 +32,34 @@
       	<table class="table table-striped" id="inventory" border="1">
         <thead class="thead-dark">
           <tr>
-             <th scope="col">UserName</th>        
-             <th scope="col">Room</th>      
-             <th class="hide_mobile" scope="col">Processor</th> 
-             <th class="hide_mobile" scope="col">RAM</th>         
-             <th class="hide_mobile" scope="col">Display</th>       
-             <th class="hide_mobile" scope="col">DisplaySerialNumber</th>
-             <th class="hide_mobile" scope="col">HardDisk</th>
-             <th class="hide_mobile" scope="col">HardDiskSerialNumber</th>
-             <th scope="col">AdditionalInfo</th>      
+             <th scope="col">Data type</th>        
+             <th scope="col">Data for change</th>           
           </tr>
         </thead>
         <tbody>
         	{% for i in inventory_data %}
-                {% if i['UserName'] == edit_user_name %}
-                  <tr>
-                    <td><input readonly data-toggle="tooltip" data-placement="bottom" title="{{ i['UserName'] }}" type="text" name="UserName" class="form-control ch_data" id="UserName" value="{{ i['UserName'] }}"></td>
-                    
-                    <td><input data-toggle="tooltip" data-placement="bottom" title="{{ i['Room'] }}" type="text" name="Room" class="form-control ch_data" id="Room" value="{{ i['Room'] }}"></td>
-                    
-                    <td><input data-toggle="tooltip" data-placement="bottom" title="{{ i['Processor'] }}" type="text" name="Processor" class="form-control ch_data" id="Processor" value="{{ i['Processor'] }}"></td>
-                    
-                    <td><input data-toggle="tooltip" data-placement="bottom" title="{{ i['RAM'] }}" type="text" name="RAM" class="form-control ch_data" id="RAM" placeholder="{{ i['RAM'] }}" value="{{ i['RAM'] }}"></td>
-                    
-                    <td><input data-toggle="tooltip" data-placement="bottom" title="{{ i['Display'] }}" type="text" name="Display" class="form-control ch_data" id="Display" value="{{ i['Display'] }}"></td>
-                    
-                    <td><input data-toggle="tooltip" data-placement="bottom" title="{{ i['DisplaySerialNumber'] }}" type="text" name="DisplaySerialNumber" class="form-control ch_data" id="DisplaySerialNumber" value="{{ i['DisplaySerialNumber'] }}"></td>
-                    
-                    <td><input data-toggle="tooltip" data-placement="bottom" title="{{ i['HardDisk'] }}" type="text" name="HardDisk" class="form-control ch_data" id="HardDisk" value="{{ i['HardDisk'] }}"></td>
-                    
-                    <td><input data-toggle="tooltip" data-placement="bottom" title="{{ i['HardDiskSerialNumber'] }}" type="text" name="HardDiskSerialNumber" class="form-control ch_data" id="HardDiskSerialNumber" value="{{ i['HardDiskSerialNumber'] }}"></td>
-                    
-                    <td><input data-toggle="tooltip" data-placement="bottom" title="{{ i['AdditionalInfo'] }}" type="text" name="AdditionalInfo" class="form-control ch_data" id="AdditionalInfo" value="{{ i['AdditionalInfo'] }}"></td>
-                  </tr>
-                {% endif %}
-            {% endfor %}
+	        	{% for key, value in i.items() %}
+	                {% if i['UserName'] == edit_user_name and key != 'type' %}
+	                  <tr>
+	                    <td>{{ key }}</td>
+	                    {% if key == 'UserName' %}
+	                      <td><input readonly data-toggle="tooltip" data-placement="bottom" title="{{ value }}" type="text" name="{{ key }}" class="form-control ch_data" id="{{ key }}" value="{{ value }}"></td>
+	                    {% else %}
+	                      <td><input  data-toggle="tooltip" data-placement="bottom" title="{{ value }}" type="text" name="{{ key }}" class="form-control ch_data" id="{{ key }}" value="{{ value }}"></td>
+	                    {% endif %}
+	                  </tr>
+	                {% endif %}
+	            {% endfor %}
+        	{% endfor %}
         </tbody>
       </table>
-      <button id="save"  class="btn btn-outline-success my-2 my-sm-0 hide_mobile" type="submit">Save</button>
+      <button id="update"  class="btn btn-outline-success my-2 my-sm-0 hide_mobile" type="submit">Update</button>
       <button id="delete" class="btn btn-outline-success my-2 my-sm-0 hide_mobile" type="button">Delete User</button>
-      </form>
+      {% if updated|int > 0%}
+      	<p class="sc_msg" style="color:lime">Successfully updated</p>
+      {% endif %}
+      
+      </form><br><br>
 	</div>
 
     <!-- Optional JavaScript -->
@@ -87,11 +75,12 @@
        var delete_uri = '?username=' + $('#UserName').val()
 	  
 	   $.get(delete_url + '' + delete_uri , function(data, status){
-	      $(".container").hide();
-	      $(".hide_block").show();
+   	  	$(".container").hide();
+        $(".hide_block").show();
+      
 	   });
 	 });
-    
+
     </script>
   </body>
 </html>
