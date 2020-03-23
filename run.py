@@ -1,17 +1,30 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Routes and views for the flask application.
+---------------------------------------------------------------
+Author:         Alex Zubov 2020 
+Email:          zubovalexandr691@gmail.com
+Telegram:       @LordOfFear
+Instagram:      @_snake_case
+Information:    This application for inventory.
+---------------------------------------------------------------
 """
+# hard import
 import os
 import random
-from datetime import datetime
-from flask import render_template, request, json, redirect, url_for, Flask
-from os import environ
-from pymongo import MongoClient
-from pyzbar.pyzbar import decode
-from PIL import Image
+import barcodes
+import mongo_bridge
 
+# Import from 
+from flask import render_template, request, json, redirect, url_for, Flask
+from gevent.pywsgi import WSGIServer
+from pymongo import MongoClient
+from os import environ
+
+# The application object
 app = Flask(__name__)
 
+# Vars for application
 random_value      = ''.join(str(random.randint(0,9)) for _ in range(12))
 app_host          = environ.get('APP_HOST', '0.0.0.0')
 app_port          = environ.get('APP_PORT', '5000')
@@ -20,73 +33,62 @@ app_mongo_port    = int(environ.get('MONGO_PORT', '27017'))
 app_mongo_db      = environ.get('MONGO_DB', 'profiles')
 app_mongo_coll    = environ.get('MONGO_COLLECTION', 'inventory_data')
 tmp_path          = environ.get('TMP_PATH_DIR', '/tmp')
+debug             = environ.get('DEBUG', 'false')
 mongo_client      = MongoClient(app_mongo_ip, app_mongo_port)
 collection        = mongo_client[app_mongo_db][app_mongo_coll]
 
-def logger(data):
-    print(data)
-
-def decode_barcode(img_path):
-    try:
-        return decode(Image.open(img_path))[0].data.decode('utf-8')
-    except Exception as e:
-        logger(e)
-        return 'Could not recognition barcode'
-
-def barcodes_worker(img, random_v):
-    img.save(os.path.join(tmp_path, random_value))
-    return json.dumps({'data_sn': decode_barcode(img)})
-    
-def get_mongo_data(collection_obj):
-    try:
-        return [x for x in collection_obj.find({}, {'_id': False})]
-    except Exception as e:
-        logger(e)
-
-def update_db_data(username, collection_obj, new_data):
-    try:
-        update_obj = {'pattern': {'UserName': username},
-                                      'new_count': { "$set": new_data }}
-        update_result = collection_obj.update_one(update_obj['pattern'], update_obj['new_count'])
-        return update_result.modified_count
-    except Exception as e:
-        logger(e)
-
-def add_mongo_data(m_collection, mongo_data):
-    try:
-        m_collection.insert_one(mongo_data)
-    except Exception as e:
-        logger(e)
-
-def delete_mongo_data(m_collection, delete_user):
-    try:
-        m_collection.delete_one({'UserName': delete_user})
-    except Exception as e:
-        logger(e)
-
+"""
+When you go to this route, you will see the data 
+entry form for inventory. The transition to this
+route can be done by going to the application 
+address or by redirecting from the functions:
+ - delete_data()
+ - set_data()
+"""
 @app.route('/')
 def index():
     return render_template('index.html')
 
+"""
+When you go to this route, you will see inventory
+data for users working remotely. 
+"""
 @app.route('/remote_users')
 def remote_users():
-    return render_template('remote_users.html', inventory_data=get_mongo_data(collection))
+    return render_template('remote_users.html',
+                            inventory_data=mongo_bridge.get_mongo_data(collection))
 
+"""
+When you go to this route, you will see all inventory
+data.
+"""
 @app.route('/inventory')
 def inventory():
-    return render_template('inventory.html', inventory_data=get_mongo_data(collection))
+    return render_template('inventory.html',
+                            inventory_data=mongo_bridge.get_mongo_data(collection))
 
+"""
+Internal route for editing inventory data. Using
+in functions update_data()
+"""
 @app.route('/edit_data')
 def edit_data():
-    return render_template('edit_data.html', edit_user_name=request.args.get('username'),
-                                            inventory_data=get_mongo_data(collection),
-                                            updated=request.args.get('updated_c'))
+    return render_template('edit_data.html',
+                            edit_user_name=request.args.get('username'),
+                            inventory_data=mongo_bridge.get_mongo_data(collection),
+                            updated=request.args.get('updated_c'))
 
+"""
+Internal route for deleting inventory data
+"""
 @app.route('/delete_data', methods=['POST', 'GET'])
 def delete_data():
-    delete_mongo_data(collection, request.args.get('username'))
+    mongo_bridge.delete_mongo_data(collection, request.args.get('username'))
     return redirect(url_for('index'))
 
+"""
+Internal route for update inventory data
+"""
 @app.route('/update_data', methods=['POST', 'GET'])
 def update_data():
     username = request.args.get('UserName')
@@ -105,10 +107,17 @@ def update_data():
                         
     }
 
-    update_count = update_db_data(username, collection, new_data)
-    return(redirect(url_for('edit_data', username=username, updated_c=update_count)))
+    update_count = mongo_bridge.update_db_data(username,
+                                               collection,
+                                               new_data)
+    return(redirect(url_for('edit_data',
+                             username=username,
+                             updated_c=update_count)))
     
 
+"""
+The route for add inventory data to database.
+"""
 @app.route('/add_data', methods=['POST', 'GET'])
 def set_data():
     if request.method == 'GET':
@@ -137,23 +146,47 @@ def set_data():
                        'type':                    inv_type[0]
                      } 
                         
-        add_mongo_data(collection, dict_data)
+        mongo_bridge.add_mongo_data(collection, dict_data)
         
         return(redirect(url_for('index')))
 
+"""
+The route for get additional information.
+Using only for mobile displays
+"""
 @app.route('/add_info')
 def add_info():
-    for user in get_mongo_data(collection):
+    for user in mongo_bridge.get_mongo_data(collection):
         if request.args.get('user_name') in user['UserName']:   
             return render_template('add_info.html', inventory_data=user)
 
+"""
+This route receives the image of the serial number 
+of the hard drive, and returns the serial number in 
+text form
+"""
 @app.route('/hdd_sn', methods=['POST', 'GET'])
 def hdd_sn():
-    return barcodes_worker(request.files['hdd_sn'], random_value)
+    return json.dumps({'hdd_serial': barcodes.barcodes_worker(request.files['hdd_sn'],
+                                    tmp_path,
+                                    random_value)})
 
+"""
+This route receives the image of the serial number 
+of the monitor, and returns the serial number in 
+text form
+"""
 @app.route('/monitor_sn', methods=['POST', 'GET'])
 def monitor_sn():
-    return barcodes_worker(request.files['monitor_sn'], random_value)
+    return json.dumps({'monitor_serial': barcodes.barcodes_worker(request.files['monitor_sn'],
+                                    tmp_path,
+                                    random_value)})
 
-app.run(host=app_host, port=app_port)
+# Main check if script module
+if __name__ == '__main__':
+    if debug == 'true':
+        app.run(host=app_host, port=app_port)
+    else:
+        http_server = WSGIServer((app_host, int(app_port)), app)
+        http_server.serve_forever()
 

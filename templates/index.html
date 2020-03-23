@@ -25,91 +25,91 @@
         </ul>
       </div> 
     </nav><br><br>
-  	<div class="container">
-	  <form action="/add_data" enctype="multipart/form-data" id="data">
-	    <h2>Inventory</h2>
-	    <div class="row">
-	      <div class="col-md-12">
-	        <div class="form-group">
-	          <label for="first">Username</label>
-	          <input type="text" name="username" class="form-control" placeholder="Name For user" id="first">
-	        </div>
-	      </div>
-	      <!--  col-md-6   -->
+    <div class="container">
+      <form action="/add_data" enctype="multipart/form-data" id="data">
+        <h2>Inventory</h2>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="first">Username</label>
+              <input type="text" name="username" class="form-control" placeholder="Name For user" id="first">
+            </div>
+          </div>
+          <!--  col-md-6   -->
 
-	      <div class="col-md-12">
-	        <div class="form-group">
-	          <label for="last">Room Number</label>
-	          <input type="text" name="room" class="form-control" placeholder="Root number" id="last">
-	        </div>
-	      </div>
-	      <!--  col-md-6   -->
-	   
-	      <div class="col-md-12">
-	        <div class="form-group">
-	          <label for="company">CPU</label>
-	          <input type="text" name="cpu" class="form-control" placeholder="Processor Info" id="company">
-	        </div>
-	      </div>
-	      <!--  col-md-6   -->
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="last">Room Number</label>
+              <input type="text" name="room" class="form-control" placeholder="Root number" id="last">
+            </div>
+          </div>
+          <!--  col-md-6   -->
+       
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="company">CPU</label>
+              <input type="text" name="cpu" class="form-control" placeholder="Processor Info" id="company">
+            </div>
+          </div>
+          <!--  col-md-6   -->
 
-	      <div class="col-md-12">
+          <div class="col-md-12">
 
-	        <div class="form-group">
-	          <label for="phone">Memory Size</label>
-	          <input type="text" name="memory" class="form-control" id="phone" placeholder="Size for RAM">
-	        </div>
-	      </div>
-	      <div class="col-md-12">
+            <div class="form-group">
+              <label for="phone">Memory Size</label>
+              <input type="text" name="memory" class="form-control" id="phone" placeholder="Size for RAM">
+            </div>
+          </div>
+          <div class="col-md-12">
 
-	        <div class="form-group">
-	          <label for="phone">Monitor</label>
-	          <input type="text" name="monitor" class="form-control" id="phone" placeholder="Monitor Type">
-	        </div>
-	      </div>
-	      <div class="col-md-12">
-	        <div class="form-group">
-	          <label for="phone">Monitor Serial Number</label>
-	          <input type="text" name="monitor_sn" class="form-control" id="monitor_serial" placeholder="SN">
-	          <input type="file" id="monitor_sn" accept="image/*" capture="environment">
-	        </div>
-	      </div>
-	      <div class="col-md-12">
-	        <div class="form-group">
-	          <label for="phone">HDD Size</label>
-	          <input type="text" name="hdd" class="form-control" id="phone" placeholder="HDD/SSD info">
-	        </div>
-	      </div>
-	      <div class="col-md-12">
+            <div class="form-group">
+              <label for="phone">Monitor</label>
+              <input type="text" name="monitor" class="form-control" id="phone" placeholder="Monitor Type">
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="phone">Monitor Serial Number</label>
+              <input type="text" name="monitor_serial" class="form-control" id="monitor_serial" placeholder="SN">
+              <input type="file" id="monitor_sn" accept="image/*" capture="environment">
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="phone">HDD Size</label>
+              <input type="text" name="hdd" class="form-control" id="phone" placeholder="HDD/SSD info">
+            </div>
+          </div>
+          <div class="col-md-12">
 
-	        <div class="form-group">
-	          <label for="phone">HDD Serial Number</label>
-	          <input type="text" name="hdd_sn" class="form-control" id="hdd_serial" placeholder="SN">
-	          <input type="file" id="hdd_sn" accept="image/*" capture="environment">
-	        </div>
-	      </div>
-	    
-	     <div class="col-md-12">
-	     	 <div class="form-group">
-			    <label for="exampleFormControlTextarea1">Additional Info</label>
-			    <textarea class="form-control" name="ainfo" id="exampleFormControlTextarea1" rows="3"></textarea>
-			  </div>
-	     </div>
-	      <div class="col-md-12">
-	     	<div class="form-group">
-		    <label for="exampleFormControlSelect1">Select type</label>
-		    <select name="list" class="form-control" id="exampleFormControlSelect1">
-		      <option>remote_user</option>
-		      <option>inventory_data</option>
-		    </select>
-		  </div>
-	     </div>
-	      
-	    </div>
-	    <!--  row   -->
-	    <button type="submit" class="btn btn-primary">Submit</button>
-	  </form><br><br>
-	</div>
+            <div class="form-group">
+              <label for="phone">HDD Serial Number</label>
+              <input type="text" name="hdd_sn" class="form-control" id="hdd_serial" placeholder="SN">
+              <input type="file" id="hdd_sn" accept="image/*" capture="environment">
+            </div>
+          </div>
+        
+         <div class="col-md-12">
+             <div class="form-group">
+                <label for="exampleFormControlTextarea1">Additional Info</label>
+                <textarea class="form-control" name="ainfo" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+         </div>
+          <div class="col-md-12">
+            <div class="form-group">
+            <label for="exampleFormControlSelect1">Select type</label>
+            <select name="list" class="form-control" id="exampleFormControlSelect1">
+              <option>remote_user</option>
+              <option>inventory_data</option>
+            </select>
+          </div>
+         </div>
+          
+        </div>
+        <!--  row   -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form><br><br>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -119,37 +119,38 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
     <script>
-    	function ajax_send(url, data){
-    		$.ajax({
-		      url: url,
-		      type: 'POST',
-		      data: data,
-		      async: false,
-		      cache: false,
-		      contentType: false,
-		      processData: false,
-		      success: function (response) {
-		      	m_code = jQuery.parseJSON(response)['data_sn']
-		      	document.getElementById('monitor_serial').value = m_code;
-		      }
-		    });
-    	}
+        var formData = new FormData();
 
-    	document.getElementById('hdd_sn').onchange = function(e) { 
-		    var url  = '/hdd_sn';
-		    var hdd_sn_img = $('#hdd_sn').get(0).files[0];
-		    var formData = new FormData();
-		    formData.append('hdd_sn', hdd_sn_img);
-		 	ajax_send(url, formData)
-		};
-	    document.getElementById('monitor_sn').onchange = function(e) { 
-		    var url  = '/monitor_sn';
-		    var hdd_sn_img = $('#monitor_sn').get(0).files[0];
-		    var formData = new FormData();
-		    formData.append('monitor_sn', hdd_sn_img);
-		 	ajax_send(url, formData)
+        function ajax_send(url, data, data_name){
+            $.ajax({
+              url: url,
+              type: 'POST',
+              data: data,
+              async: false,
+              cache: false,
+              contentType: false,
+              processData: false,
+              success: function (response) {
+                responce_data = jQuery.parseJSON(response)[data_name]
+                document.getElementById(data_name).value = responce_data;
+              }
+            });
+        }
 
-		};
-	</script>
+        document.getElementById('hdd_sn').onchange = function(e) { 
+            var url  = '{{ url_for('hdd_sn') }}';
+            var hdd_sn_img = $('#hdd_sn').get(0).files[0];
+            formData.append('hdd_sn', hdd_sn_img);
+            ajax_send(url, formData, 'hdd_serial')
+        };
+
+        document.getElementById('monitor_sn').onchange = function(e) { 
+            var url  = '{{ url_for('monitor_sn') }}';
+            var monitor_sn_img = $('#monitor_sn').get(0).files[0];
+            formData.append('monitor_sn', monitor_sn_img);
+            ajax_send(url, formData, 'monitor_serial')
+
+        };
+    </script>
   </body>
 </html>
