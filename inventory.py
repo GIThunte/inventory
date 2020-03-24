@@ -147,7 +147,6 @@ def update_data():
                              username=username,
                              updated_c=update_count)))
     
-
 """
 The route for add inventory data to database.
 """
