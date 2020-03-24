@@ -42,7 +42,7 @@
   </nav><br><br>
     <div class="container context">
           {% if inventory_data|length and 'inventory_data' in inventory_data|string %}
-          <table class="table table-striped" id="inventory" border="1">
+          <table class="table table-striped" id="inventory" border="1" style="background-color: white">
             <thead class="thead-dark">
               <tr>
                  <th scope="col">UserName</th>        
@@ -86,10 +86,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.js"></script>
     <script src="/static/automark.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-    <script type="text/javascript" src="/static/to_pdf.js"></script>
-    </script>
 
+    <script type="text/javascript" src="/static/to_pdf.js"></script>
+    <script type="text/javascript">
+        
+    </script>
   </body>
 </html>
