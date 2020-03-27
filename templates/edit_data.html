@@ -39,10 +39,10 @@
         <tbody>
         	{% for i in inventory_data %}
 	        	{% for key, value in i.items() %}
-	                {% if i['UserName'] == edit_user_name and key != 'type' %}
+	                {% if i['InvID'] == edit_user_id and key != 'type' %}
 	                  <tr>
 	                    <td>{{ key }}</td>
-	                    {% if key == 'UserName' %}
+	                    {% if key == 'InvID' %}
 	                      <td><input readonly data-toggle="tooltip" data-placement="bottom" title="{{ value }}" type="text" name="{{ key }}" class="form-control ch_data" id="{{ key }}" value="{{ value }}"></td>
 	                    {% else %}
 	                      <td><input  data-toggle="tooltip" data-placement="bottom" title="{{ value }}" type="text" name="{{ key }}" class="form-control ch_data" id="{{ key }}" value="{{ value }}"></td>
@@ -71,15 +71,15 @@
     <script type="text/javascript">
      $(".hide_block").hide();
      $("#delete").click(function(){
-       var delete_url = "{{ url_for('delete_data') }}"
-       var delete_uri = '?username=' + $('#UserName').val()
-	  
-	   $.get(delete_url + '' + delete_uri , function(data, status){
-   	  	$(".container").hide();
-        $(".hide_block").show();
-      
-	   });
-	 });
+         var delete_url = "{{ url_for('delete_data') }}"
+         var delete_uri = '?inv_id=' + $('#InvID').val()
+  	  
+  	   $.get(delete_url + '' + delete_uri , function(data, status){
+     	  	$(".container").hide();
+          $(".hide_block").show();
+        
+  	   });
+  	 });
 
     </script>
   </body>

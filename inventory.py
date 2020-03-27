@@ -74,7 +74,7 @@ in functions update_data()
 @app.route('/edit_data')
 def edit_data():
     return render_template('edit_data.html',
-                            edit_user_name=request.args.get('username'),
+                            edit_user_id=request.args.get('inv_id'),
                             inventory_data=mongo_bridge.get_mongo_data(collection),
                             updated=request.args.get('updated_c'))
 
@@ -83,7 +83,7 @@ Internal route for deleting inventory data
 """
 @app.route('/delete_data', methods=['POST', 'GET'])
 def delete_data():
-    mongo_bridge.delete_mongo_data(collection, request.args.get('username'))
+    mongo_bridge.delete_mongo_data(collection, request.args.get('inv_id'))
     return redirect(url_for('index'))
 
 
@@ -94,7 +94,7 @@ Using only for mobile displays
 @app.route('/add_info')
 def add_info():
     for user in mongo_bridge.get_mongo_data(collection):
-        if request.args.get('user_name') in user['UserName']:   
+        if request.args.get('inv_id') in user['InvID']:   
             return render_template('add_info.html', inventory_data=user)
 
 """
@@ -124,11 +124,11 @@ Internal route for update inventory data
 """
 @app.route('/update_data', methods=['POST', 'GET'])
 def update_data():
-    username = request.args.get('UserName')
+    inventory_id = request.args.get('InvID')
     
     new_data = {
-
-        'UserName':             username,            
+        'InvID':                inventory_id,
+        'UserName':             request.args.get('UserName'),            
         'Room':                 request.args.get('Room'),                
         'Processor':            request.args.get('Processor'),           
         'RAM':                  request.args.get('RAM'),                 
@@ -140,11 +140,11 @@ def update_data():
                         
     }
 
-    update_count = mongo_bridge.update_db_data(username,
+    update_count = mongo_bridge.update_db_data(inventory_id,
                                                collection,
                                                new_data)
     return(redirect(url_for('edit_data',
-                             username=username,
+                             inv_id=inventory_id,
                              updated_c=update_count)))
     
 """
@@ -166,6 +166,7 @@ def set_data():
         additional_info = request.args.get('ainfo')
 
         dict_data =  {
+                       'InvID':                   random_value,
                        'UserName':                username,
                        'Room':                    room_num,
                        'Processor':               cpu,

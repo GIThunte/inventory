@@ -23,9 +23,9 @@ Function for update db data, get username, object
 mongo collection and new data for set in db, this
 function will return count changes
 """
-def update_db_data(username, collection_obj, new_data):
+def update_db_data(inventory_id, collection_obj, new_data):
     try:
-        update_obj = {'pattern': {'UserName': username},
+        update_obj = {'pattern': {'InvID': inventory_id},
                                       'new_count': { "$set": new_data }}
         update_result = collection_obj.update_one(update_obj['pattern'], update_obj['new_count'])
         return update_result.modified_count
@@ -46,9 +46,9 @@ def add_mongo_data(m_collection, mongo_data):
 Function for delete data, pattern for delete username
 also for working whis function needed collection object
 """
-def delete_mongo_data(m_collection, delete_user):
+def delete_mongo_data(m_collection, inventory_id):
     try:
-        m_collection.delete_one({'UserName': delete_user})
+        m_collection.delete_one({'InvID': inventory_id})
     except Exception as e:
         logger(e)
 
