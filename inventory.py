@@ -27,7 +27,7 @@ app = Flask(__name__)
 # Vars for application
 app_host          = environ.get('APP_HOST', '0.0.0.0')
 app_port          = environ.get('APP_PORT', '5000')
-app_mongo_ip      = environ.get('MONGO_IP', '10.1.0.82')
+app_mongo_ip      = environ.get('MONGO_IP', '0.0.0.0')
 app_mongo_port    = int(environ.get('MONGO_PORT', '27017'))
 app_mongo_db      = environ.get('MONGO_DB', 'profiles')
 app_mongo_coll    = environ.get('MONGO_COLLECTION', 'inventory_data')
