@@ -25,7 +25,6 @@ from os import environ
 app = Flask(__name__)
 
 # Vars for application
-random_value      = ''.join(str(random.randint(0,9)) for _ in range(12))
 app_host          = environ.get('APP_HOST', '0.0.0.0')
 app_port          = environ.get('APP_PORT', '5000')
 app_mongo_ip      = environ.get('MONGO_IP', '10.1.0.82')
@@ -36,6 +35,13 @@ tmp_path          = environ.get('TMP_PATH_DIR', '/tmp')
 debug             = environ.get('DEBUG', 'false')
 mongo_client      = MongoClient(app_mongo_ip, app_mongo_port)
 collection        = mongo_client[app_mongo_db][app_mongo_coll]
+
+"""
+This function will be return random number value, for example:
+61786705977283
+"""
+def random_value():
+    return ''.join(str(random.randint(0,9)) for _ in range(12))
 
 """
 When you go to this route, you will see the data 
@@ -106,7 +112,7 @@ text form
 def hdd_sn():
     return json.dumps({'hdd_serial': barcodes.barcodes_worker(request.files['hdd_sn'],
                                     tmp_path,
-                                    random_value)})
+                                    random_value())})
 
 """
 This route receives the image of the serial number 
@@ -117,7 +123,7 @@ text form
 def monitor_sn():
     return json.dumps({'monitor_serial': barcodes.barcodes_worker(request.files['monitor_sn'],
                                     tmp_path,
-                                    random_value)})
+                                    random_value())})
 
 """
 Internal route for update inventory data
@@ -166,7 +172,7 @@ def set_data():
         additional_info = request.args.get('ainfo')
 
         dict_data =  {
-                       'InvID':                   random_value,
+                       'InvID':                   random_value(),
                        'UserName':                username,
                        'Room':                    room_num,
                        'Processor':               cpu,
