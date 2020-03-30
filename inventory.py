@@ -56,6 +56,22 @@ def index():
     return render_template('index.html')
 
 """
+view for get qr codes
+"""
+@app.route('/qr_codes')
+def qr_codes():
+    inv_data_list = []
+    for i in mongo_bridge.get_mongo_data(collection):
+        inv_data      = {}
+        for key, value in i.items():
+            if key == 'InvID' or key == 'UserName' or key == 'type':
+                inv_data[key] = value
+        inv_data_list.append(inv_data)
+
+    return render_template('qr_codes.html',
+                            inventory_data=inv_data_list)
+
+"""
 When you go to this route, you will see inventory
 data for users working remotely. 
 """
