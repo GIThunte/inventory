@@ -30,8 +30,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('inventory') }}">Inventory </a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="{{ url_for('remote_users') }}">Remote Users </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ url_for('qr_codes') }}">QR Codes</a>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
@@ -53,15 +56,11 @@
             </thead>
             <tbody>
               {% for i in inventory_data %}
-                
                   <tr>
-                    
                     <td>{{ i['UserName'] }}</td>
                     <td>{{ i['type'] }}</td>
                     <td><div id="{{ i['InvID'] }}"></div></td>
-                   
                   </tr>
-               
               {% endfor %}
             </tbody>
           </table>
