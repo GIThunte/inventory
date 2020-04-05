@@ -70,7 +70,7 @@
                     <td class="hide_mobile">{{ i['DisplaySerialNumber'] }}</td>
                     <td class="hide_mobile">{{ i['HardDisk'] }}</td>
                     <td class="hide_mobile">{{ i['HardDiskSerialNumber'] }}</td>
-                    <td >{{ i['AdditionalInfo'] }}<p class="hide_for_pc"><a href="{{ url_for('add_info', user_name=i['UserName']) }}">Additional Information</a></p></td>
+                    <td >{{ i['AdditionalInfo'] }}<p class="hide_for_pc"><a href="{{ url_for('add_info', inv_id=i['InvID']) }}">Additional Information</a></p></td>
                   </tr>
                 {% endif %}
               {% endfor %}
