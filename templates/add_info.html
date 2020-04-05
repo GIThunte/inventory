@@ -26,15 +26,29 @@
       </div> 
     </nav><br><br>
   	<div class="container">
-       <ul class="list-group">
-        {% for key, value in inventory_data.items() %}
-            {% if not value %}
-               <li class="list-group-item "><b>{{ key }}</b> -> "not data"</li>
-            {% else %}
-               <li class="list-group-item "><b>{{ key }}</b> -> {{ value }}</li> 
-            {% endif %}
-        {% endfor %}
-      </ul>
+      
+      <table class="table table-responsive-lg table-bordered table-hover" id="remote_users" style="background-color: white">
+            <thead class="thead-dark">
+              <tr>
+                 <th scope="col">Data</th>
+                 <th scope="col">Info</th>          
+              </tr>
+            </thead>
+            <tbody>
+              {% for key, value in inventory_data.items() %}
+                  <tr>
+                    {% if not value %}
+                      <td>{{ key }}</td>
+                      <td><b>not data</b></td>
+                    {% else %}
+                      <td>{{ key }}</td>
+                      <td>{{ value }}</td>
+                    {% endif %}
+                  </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
 	  </div>
 
     <!-- Optional JavaScript -->
